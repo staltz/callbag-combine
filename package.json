@@ -1,0 +1,14 @@
+{
+  "name": "callbag-combine",
+  "version": "1.0.0",
+  "description": "Callbag factory that combines data from multiple callbag sources",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test.js"
+  },
+  "author": "staltz.com",
+  "license": "MIT",
+  "devDependencies": {
+    "tape": "^4.8.0"
+  }
+}

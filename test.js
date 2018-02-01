@@ -4,9 +4,9 @@ const combine = require('./index');
 test('it combines 1 async finite listenable source', (t) => {
   t.plan(14);
   const downwardsExpectedType = [
-    [0, 'function'], 
-    [1, 'object'], 
-    [1, 'object'], 
+    [0, 'function'],
+    [1, 'object'],
+    [1, 'object'],
     [1, 'object'],
     [2, 'undefined']
   ];
@@ -18,11 +18,11 @@ test('it combines 1 async finite listenable source', (t) => {
       let i = 0;
       const id = setInterval(() => {
         i++;
-	sink(1, i);
-	if (i === 3) {
-	  clearInterval(id);
-	  sink(2);
-	}
+        sink(1, i);
+        if (i === 3) {
+          clearInterval(id);
+          sink(2);
+        }
       }, 100);
       sink(0, sourceA);
     }
@@ -51,16 +51,16 @@ test('it combines 2 async finite listenable sources', (t) => {
   t.plan(20);
 
   const downwardsExpectedType = [
-    [0, 'function'], 
-    [1, 'object'], 
-    [1, 'object'], 
-    [1, 'object'], 
-    [1, 'object'], 
-    [1, 'object'], 
+    [0, 'function'],
+    [1, 'object'],
+    [1, 'object'],
+    [1, 'object'],
+    [1, 'object'],
+    [1, 'object'],
     [2, 'undefined']
   ];
   const downwardsExpected = [
-    [2, 'a'], 
+    [2, 'a'],
     [3, 'a'],
     [4, 'a'],
     [4, 'b'],
@@ -73,11 +73,11 @@ test('it combines 2 async finite listenable sources', (t) => {
       let i = 0;
       const id = setInterval(() => {
         i++;
-	sink(1, i);
-	if (i === 5) {
-	  clearInterval(id);
-	  sink(2);
-	}
+        sink(1, i);
+        if (i === 5) {
+          clearInterval(id);
+          sink(2);
+        }
       }, 100);
       sink(0, sourceA);
     }
@@ -119,26 +119,26 @@ test('it returns a source that disposes upon upwards END', (t) => {
     [2, 'undefined']
   ];
   const downwardsExpectedType = [
-    [0, 'function'], 
-    [1, 'object'], 
-    [1, 'object'], 
+    [0, 'function'],
+    [1, 'object'],
+    [1, 'object'],
     [1, 'object'],
   ];
   const downwardsExpected = [[10], [20], [30]];
 
   function makeSource() {
-    let sent = 0; 
+    let sent = 0;
     let id;
     const source = (type, data) => {
       const e = upwardsExpected.shift();
       t.equals(type, e[0], 'upwards type is expected: ' + e[0]);
       t.equals(typeof data, e[1], 'upwards data is expected: ' + e[1]);
       if (type === 0) {
-	const sink = data;
-	id = setInterval(() => {
+        const sink = data;
+        id = setInterval(() => {
           sink(1, (++sent)*10);
-	}, 100);
-	sink(0, source);
+        }, 100);
+        sink(0, source);
       } else if (type === 2) {
         clearInterval(id);
       }
@@ -160,9 +160,9 @@ test('it returns a source that disposes upon upwards END', (t) => {
         t.deepEquals(data, e, 'downwards data is expected: ' + JSON.stringify(e));
       }
       if (downwardsExpected.length === 0) {
-        talkback(2);   
+        talkback(2);
       }
-  };
+    };
   }
 
   const source = combine(makeSource());
@@ -187,15 +187,15 @@ test('it combines two infinite listenable sources', (t) => {
   ];
 
   const downwardsExpectedType = [
-    [0, 'function'], 
-    [1, 'object'], 
-    [1, 'object'], 
-    [1, 'object'], 
-    [1, 'object'], 
-    [1, 'object'] 
+    [0, 'function'],
+    [1, 'object'],
+    [1, 'object'],
+    [1, 'object'],
+    [1, 'object'],
+    [1, 'object']
   ];
   const downwardsExpected = [
-    [2, 'a'], 
+    [2, 'a'],
     [3, 'a'],
     [4, 'a'],
     [4, 'b'],
@@ -230,13 +230,13 @@ test('it combines two infinite listenable sources', (t) => {
     if (start !== 0) return;
     let id;
     id = setTimeout(() => {
-      sink(1, 'a'); 
+      sink(1, 'a');
       id = setTimeout(() => {
-        sink(1, 'b'); 
+        sink(1, 'b');
         id = setTimeout(() => {
-          sink(1, 'c'); 
+          sink(1, 'c');
           id = setTimeout(() => {
-            sink(1, 'd'); 
+            sink(1, 'd');
           }, 230);
         }, 230);
       }, 230);
@@ -265,9 +265,9 @@ test('it combines two infinite listenable sources', (t) => {
         t.deepEquals(data, e, 'downwards data is expected: ' + JSON.stringify(e));
       }
       if (downwardsExpected.length === 0) {
-        talkback(2);   
+        talkback(2);
       }
-  };
+    };
   }
 
   const source = combine(sourceA, sourceB);

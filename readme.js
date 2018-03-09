@@ -16,7 +16,7 @@
  *
  *     const source = combine(interval(100), interval(350));
  *
- *     observe(x => console.log(x)(source)); // [2,0]
+ *     observe(x => console.log(x))(source); // [2,0]
  *                                           // [3,0]
  *                                           // [4,0]
  *                                           // [5,0]

@@ -41,8 +41,8 @@ const combine = (...sources) => (start, sink) => {
   let Ns = n; // start counter
   let Nd = n; // data counter
   let Ne = n; // end counter
-  const vals = Array(n);
-  const sourceTalkbacks = Array(n);
+  const vals = new Array(n);
+  const sourceTalkbacks = new Array(n);
   const talkback = (t, d) => {
     if (t !== 2) return;
     for (let i = 0; i < n; i++) sourceTalkbacks[i](2);
@@ -57,7 +57,7 @@ const combine = (...sources) => (start, sink) => {
         const _Nd = !Nd ? 0 : vals[i] === EMPTY ? --Nd : Nd;
         vals[i] = d;
         if (_Nd === 0) {
-          const arr = Array(n);
+          const arr = new Array(n);
           for (let j = 0; j < n; ++j) arr[j] = vals[j];
           sink(1, arr);
         }

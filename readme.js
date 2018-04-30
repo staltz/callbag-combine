@@ -44,8 +44,8 @@ const combine = (...sources) => (start, sink) => {
   const vals = new Array(n);
   const sourceTalkbacks = new Array(n);
   const talkback = (t, d) => {
-    if (t !== 2) return;
-    for (let i = 0; i < n; i++) sourceTalkbacks[i](2);
+    if (t === 0) return;
+    for (let i = 0; i < n; i++) sourceTalkbacks[i](t, d);
   };
   sources.forEach((source, i) => {
     vals[i] = EMPTY;

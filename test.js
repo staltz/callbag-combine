@@ -280,3 +280,78 @@ test('it combines two infinite listenable sources', (t) => {
   }, 800);
 });
 
+test('it combines pullable sources', (t) => {
+  t.plan(19);
+
+  const downwardsExpectedType = [
+    [0, 'function'],
+    [1, 'object'],
+    [1, 'object'],
+    [1, 'object'],
+    [1, 'object'],
+    [1, 'object'],
+    [2, 'undefined']
+  ];
+
+  const downwardsExpected = [
+    [1, 'a'],
+    [2, 'a'],
+    [3, 'a'],
+    [3, 'b'],
+    [3, 'c']
+  ];
+
+  function makePullable(values) {
+    return (start, sink) => {
+      let completed = false;
+      sink(0, (type) => {
+        if (completed) return;
+
+        if (type === 1) {
+          const value = values.shift();
+
+          if (values.length === 0) {
+            completed = true;
+          };
+
+          sink(1, value);
+
+          if (completed) {
+            sink(2);
+          }
+        }
+      });
+    };
+  }
+
+  function makeSink() {
+    let talkback;
+    return (type, data) => {
+      const et = downwardsExpectedType.shift();
+      t.equals(type, et[0], 'downwards type is expected: ' + et[0]);
+      t.equals(typeof data, et[1], 'downwards data type is expected: ' + et[1]);
+
+      if (type === 2) return;
+
+      if (type === 0) {
+        talkback = data;
+      }
+
+      if (type === 1) {
+        const e = downwardsExpected.shift();
+        t.deepEquals(data, e, 'downwards data is expected: ' + JSON.stringify(e));
+      }
+
+      talkback(1);
+    };
+  }
+
+  const source = combine(
+    makePullable([1, 2, 3]),
+    makePullable(['a', 'b', 'c'])
+  );
+  source(0, makeSink());
+
+  t.end();
+});
+

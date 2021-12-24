@@ -304,6 +304,7 @@ test('it combines pullable sources', (t) => {
   function makePullable(values) {
     return (start, sink) => {
       let completed = false;
+      let terminated = false;
       sink(0, (type) => {
         if (completed) return;
 
@@ -316,8 +317,9 @@ test('it combines pullable sources', (t) => {
 
           sink(1, value);
 
-          if (completed) {
+          if (completed && !terminated) {
             sink(2);
+            terminated = true;
           }
         }
       });
